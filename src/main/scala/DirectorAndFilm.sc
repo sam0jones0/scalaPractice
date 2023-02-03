@@ -1,59 +1,34 @@
-class Director(
-    val firstName: String,
-    val lastName: String,
-    val yearOfBirth: Int
+case class Director(
+    firstName: String,
+    lastName: String,
+    yearOfBirth: Int
 ) {
 
   def name: String =
     s"$firstName $lastName"
-
-  def copy(
-      firstName: String = this.firstName,
-      lastName: String = this.lastName,
-      yearOfBirth: Int = this.yearOfBirth
-  ) =
-    new Director(firstName, lastName, yearOfBirth)
 }
 
 object Director {
-  def apply(firstName: String, lastName: String, yearOfBirth: Int): Director =
-    new Director(firstName, lastName, yearOfBirth)
-
   def older(director1: Director, director2: Director): Director =
     if (director1.yearOfBirth < director2.yearOfBirth) director1 else director2
 }
 
-class Film(
-    val name: String,
-    val yearOfRelease: Int,
-    val imdbRating: Double,
-    val director: Director
+case class Film(
+    name: String,
+    yearOfRelease: Int,
+    imdbRating: Double,
+    director: Director
 ) {
 
   def directorsAge =
-    director.yearOfBirth - yearOfRelease
+    yearOfRelease - director.yearOfBirth
 
   def isDirectedBy(director: Director) =
     this.director == director
 
-  def copy(
-      name: String = this.name,
-      yearOfRelease: Int = this.yearOfRelease,
-      imdbRating: Double = this.imdbRating,
-      director: Director = this.director
-  ) =
-    new Film(name, yearOfRelease, imdbRating, director)
 }
 
 object Film {
-  def apply(
-      name: String,
-      yearOfRelease: Int,
-      imdbRating: Double,
-      director: Director
-  ): Film =
-    new Film(name, yearOfRelease, imdbRating, director)
-
   def newer(film1: Film, film2: Film): Film =
     if (film1.yearOfRelease < film2.yearOfRelease) film1 else film2
 
@@ -68,3 +43,27 @@ object Film {
     else filmB.director
   }
 }
+
+val d1 =
+  Director(firstName = "Clint", lastName = "Eastwood", yearOfBirth = 1991)
+val d2 = Director(firstName = "Ham", lastName = "Bones", yearOfBirth = 2009)
+val f1 =
+  Film(name = "Poo", yearOfRelease = 2000, imdbRating = 8.8, director = d1)
+val f2 =
+  Film(name = "Foo", yearOfRelease = 2010, imdbRating = 8.4, director = d2)
+
+Film.highestRating(f1, f2)
+Film.oldestDirectorAtTheTime(f1, f2)
+
+object Dad {
+  def rate(film: Film): Double = {
+    film match {
+      case Film(_, _, _, Director("Clint", "Eastwood", _)) => 10.0
+      case Film(_, _, _, Director("John", "McTiernan", _)) => 7.0
+      case _                                               => 3.0
+    }
+  }
+}
+
+Dad.rate(f1)
+Dad.rate(f2)
