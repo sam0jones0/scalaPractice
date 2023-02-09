@@ -1,6 +1,6 @@
 import java.util.Date
 
-trait Visitor {
+sealed trait Visitor {
   def id: String
 
   def createdAt: Date
@@ -8,10 +8,20 @@ trait Visitor {
   def age: Long = new Date().getTime - createdAt.getTime
 }
 
-case class Anonymous(id: String, createdAt: Date = new Date()) extends Visitor
+final case class Anonymous(id: String, createdAt: Date = new Date())
+    extends Visitor
 
-case class User(id: String, email: String, createdAt: Date = new Date())
-  extends Visitor
+final case class User(id: String, email: String, createdAt: Date = new Date())
+    extends Visitor
+
+def missingCase(v: Visitor): Unit = {
+  v match {
+    case Anonymous(k, _) if k.nonEmpty => "User with nonempty ID"
+    case Anonymous(k, _) if k.isEmpty  => "User with empty ID"
+    case Anonymous(_, _)               => "Got some other unknown user"
+    case User(_, _, _)                 => "Got some other user"
+  }
+}
 
 //
 // main
