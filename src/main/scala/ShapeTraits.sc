@@ -1,4 +1,4 @@
-import scala.math.{Pi, pow}
+import scala.math.{pow, Pi}
 
 sealed trait Shape {
   def sides: Int
@@ -13,13 +13,13 @@ sealed trait Rectangular extends Shape {
 
   def width: Double
 
-  val sides = 4
+  val sides                      = 4
   override val perimeter: Double = (height * 2) + (width * 2)
-  override val area: Double = height * width
+  override val area: Double      = height * width
 }
 
 final case class Square(size: Double) extends Rectangular {
-  val width = size
+  val width  = size
   val height = size
 }
 
@@ -29,7 +29,7 @@ final case class Circle(radius: Double) extends Shape {
   override def sides: Int = 1
 
   val perimeter: Double = Pi * 2 * radius
-  val area: Double = Pi * pow(radius, 2)
+  val area: Double      = Pi * pow(radius, 2)
 }
 
 case object Draw {
