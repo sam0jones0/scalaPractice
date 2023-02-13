@@ -44,7 +44,8 @@ object Film {
   }
 }
 
-val d1 = Director(firstName = "Sam", lastName = "Jones", yearOfBirth = 1991)
+val d1 =
+  Director(firstName = "Clint", lastName = "Eastwood", yearOfBirth = 1991)
 val d2 = Director(firstName = "Ham", lastName = "Bones", yearOfBirth = 2009)
 val f1 =
   Film(name = "Poo", yearOfRelease = 2000, imdbRating = 8.8, director = d1)
@@ -53,3 +54,16 @@ val f2 =
 
 Film.highestRating(f1, f2)
 Film.oldestDirectorAtTheTime(f1, f2)
+
+object Dad {
+  def rate(film: Film): Double = {
+    film match {
+      case Film(_, _, _, Director("Clint", "Eastwood", _)) => 10.0
+      case Film(_, _, _, Director("John", "McTiernan", _)) => 7.0
+      case _                                               => 3.0
+    }
+  }
+}
+
+Dad.rate(f1)
+Dad.rate(f2)

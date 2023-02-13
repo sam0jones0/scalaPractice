@@ -13,8 +13,10 @@ object ChipShop {
     }
 }
 
-val c = Cat("Black", "CHIPs")
+val c = Cat("Black", "chiPs")
 c.food
 c.colour
+val d = Cat("Black", "Tuna")
 
 ChipShop.willServe(c)
+ChipShop.willServe(d)
