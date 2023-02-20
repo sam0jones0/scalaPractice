@@ -11,11 +11,11 @@ case object Green extends TrafficLight
 //
 // Calculation has a result, which is a success or failure
 
+sealed trait CalcResult
+
 sealed trait Calculation {
   def result: CalcResult
 }
-
-sealed trait CalcResult
 
 final case class Success(result: Int) extends CalcResult
 
@@ -36,7 +36,9 @@ final case class Failure(message: String) extends Calculation
 sealed trait WaterSource
 
 final case class Well() extends WaterSource
+
 final case class Spring() extends WaterSource
+
 final case class Tap() extends WaterSource
 
 case class Water(size: Int, source: WaterSource, carbonated: Boolean)
