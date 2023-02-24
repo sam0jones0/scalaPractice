@@ -1,3 +1,4 @@
+import scala.annotation.tailrec
 //
 // General skeleton for Recursive Algebraic Data Types Pattern
 
@@ -11,9 +12,16 @@ case object BaseCase extends RecursiveExample
 //
 
 sealed trait IntList {
-  def sum(): Int = this match {
+  //  @tailrec // error
+  final def sumNonTail(): Int = this match {
     case End              => 0
-    case Pair(head, tail) => head + tail.sum
+    case Pair(head, tail) => head + tail.sumNonTail()
+  }
+
+  @tailrec
+  final def sumTail(total: Int = 0): Int = this match {
+    case End              => total
+    case Pair(head, tail) => tail.sumTail(total + head)
   }
 
   def toString: String
@@ -31,6 +39,10 @@ val myList = Pair(1, Pair(2, Pair(3, End)))
 
 val example = Pair(1, Pair(2, Pair(3, End)))
 
-assert(example.sum == 6)
-assert(example.tail.sum == 5)
-assert(End.sum == 0)
+assert(example.sumNonTail == 6)
+assert(example.tail.sumNonTail == 5)
+assert(End.sumNonTail == 0)
+
+assert(example.sumTail() == 6)
+assert(example.tail.sumTail() == 5)
+assert(End.sumTail() == 0)
