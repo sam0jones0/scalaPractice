@@ -1,4 +1,13 @@
 //
+// General skeleton for Recursive Algebraic Data Types Pattern
+
+sealed trait RecursiveExample
+
+final case class RecursiveCase(recursion: RecursiveExample) extends RecursiveExample
+
+case object BaseCase extends RecursiveExample
+
+//
 //
 
 sealed trait IntList {
@@ -11,13 +20,11 @@ sealed trait IntList {
 }
 
 case object End extends IntList {
-  override def toString: String =
-    ""
+  override def toString: String = ""
 }
 
 final case class Pair(head: Int, tail: IntList) extends IntList {
-  override def toString: String =
-    s"${head.toString}, ${tail.toString}"
+  override def toString: String = s"${head.toString}, ${tail.toString}"
 }
 
 val myList = Pair(1, Pair(2, Pair(3, End)))
