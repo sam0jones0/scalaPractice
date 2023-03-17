@@ -4,22 +4,41 @@ import scala.Double.NaN
 
 sealed trait Expression {
   def eval: Calculation = this match {
-    case Number(value)            => value
-    case Addition(left, right)    => left.eval + right.eval
-    case Subtraction(left, right) => left.eval - right.eval
+
+    case Addition(left, right) =>
+      left.eval match {
+        case Failure(reason) => Failure(reason)
+        case Success(leftValue) =>
+          right.eval match {
+            case Failure(reason)     => Failure(reason)
+            case Success(rightValue) => Success(leftValue + rightValue)
+          }
+      }
+
+    case Subtraction(left, right) =>
+      left.eval match {
+        case Failure(reason) => Failure(reason)
+        case Success(leftValue) =>
+          right.eval match {
+            case Failure(reason)     => Failure(reason)
+            case Success(rightValue) => Success(leftValue - rightValue)
+          }
+      }
+
+    case Division(left, right) => ???
+    case SquareRoot(of)        => ???
+
+    case Number(value) => Success(value)
   }
 }
 
-sealed trait Calculation {
-  def value = this match {
-    case NaN    => ???
-    case Double => ???
-  }
-}
+sealed trait Calculation
 
-final case class Successful(result: Int) extends Calculation
+final case class Success(result: Double) extends Calculation
 
-final case class Failure(result: Int) extends Calculation
+final case class Failure(reason: String) extends Calculation
+
+//
 
 final case class Number(value: Double) extends Expression
 
