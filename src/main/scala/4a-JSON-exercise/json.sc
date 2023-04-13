@@ -15,40 +15,64 @@ JsObject ::= ObjectCell key:String value:Json tail:JsObject
 
  */
 
-sealed trait Json
+// TODO: Why the hell does this need to be in a json object? Doesn't work without.
 
-// Values
+object json {
+  sealed trait Json {
+    def print: String = {
 
-final case class JsNumber(value: Double) extends Json
+      def seqToJson(seqCell: SeqCell): String =
+        seqCell match {
+          case SeqCell(head, tail: SeqCell) => s"${head.print}, ${seqToJson(tail)}"
+          case SeqCell(head, SeqEnd)        => s"${head.print}"
+        }
 
-final case class JsString(value: String) extends Json
+      this match {
+        case JsNumber(value)         => value.toString
+        case JsString(value)         => s""""$value""""
+        case JsBoolean(value)        => value.toString
+        case JsNull                  => "null"
+        case seqCell @ SeqCell(_, _) => s"[${seqToJson(seqCell)}]"
 
-final case class JsBoolean(value: Boolean) extends Json
+      }
+    }
 
-case object JsNull extends Json
+  }
 
-// Sequence
+  // Values
 
-sealed trait JsSequence extends Json
+  final case class JsNumber(value: Double) extends Json
 
-final case class SeqCell(head: Json, tail: JsSequence) extends JsSequence
+  final case class JsString(value: String) extends Json
 
-case object SeqEnd extends JsSequence
+  final case class JsBoolean(value: Boolean) extends Json
 
-// Object
+  case object JsNull extends Json
 
-sealed trait JsObject extends Json
+  // Sequence
 
-final case class ObjectCell(key: String, value: Json, tail: JsObject)
+  sealed trait JsSequence extends Json
 
-case object ObjectEnd extends JsObject
+  final case class SeqCell(head: Json, tail: JsSequence) extends JsSequence
 
+  case object SeqEnd extends JsSequence
+
+  // Object
+
+  sealed trait JsObject extends Json
+
+  final case class ObjectCell(key: String, value: Json, tail: JsObject)
+
+  case object ObjectEnd extends JsObject
+}
+
+import json._
 //
 //
 // Tests
 
-//SeqCell(JsString("a string"), SeqCell(JsNumber(1.0), SeqCell(JsBoolean(true), SeqEnd))).print
-//// res0: String = ["a string", 1.0, true]
+SeqCell(JsString("a string"), SeqCell(JsNumber(1.0), SeqCell(JsBoolean(true), SeqEnd))).print
+// res0: String = ["a string", 1.0, true]
 //
 //ObjectCell(
 //  "a",
