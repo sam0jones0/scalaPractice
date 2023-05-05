@@ -14,6 +14,6 @@ Box("a", Seq(1))
 
 Box(Seq(1, 2, 3, 3.0), Option(1))
 
-def print[A](in: A) = this
+def print[A](in: A) = in
 
 print(23)
