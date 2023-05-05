@@ -14,6 +14,7 @@ sealed trait LinkedList[A] {
     linkedList match {
       case LinkedListNode(value, End()) => s"${value.toString}"
       case LinkedListNode(value, next)  => s"${value.toString}, ${toString(next)}"
+      case End()                        => ""
     }
 
   def print = s"[${toString(this)}]"
