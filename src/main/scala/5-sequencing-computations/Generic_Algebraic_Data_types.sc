@@ -7,7 +7,7 @@ final case class Success[A](result: A) extends Result[A]
 final case class Failure[A](reason: String) extends Result[A]
 
 //
-//
+// Invariant Generic Sum Type Pattern: Linked List (with toString)
 
 sealed trait LinkedList[A] {
   def toString(linkedList: LinkedList[A]): String =
