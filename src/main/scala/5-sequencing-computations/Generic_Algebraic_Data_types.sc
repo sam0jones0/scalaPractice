@@ -11,6 +11,14 @@ final case class Failure[A](reason: String) extends Result[A]
 // Invariant Generic Sum Type Pattern: Linked List (with toString)
 
 sealed trait LinkedList[A] {
+
+  @tailrec
+  final def apply(position: Int): A =
+    this match {
+      case End()                      => throw new Exception(s"No node at position: $position")
+      case LinkedListNode(data, next) => if (position == 0) data else next.apply(position - 1)
+    }
+
   def toString(linkedList: LinkedList[A]): String =
     linkedList match {
       case LinkedListNode(data, End()) => s"${data.toString}"
@@ -59,3 +67,14 @@ assert(!End().contains(0))
 
 // This should not compile
 // example.contains("not an Int")
+
+val example = LinkedListNode(1, LinkedListNode(2, LinkedListNode(3, End())))
+assert(example(0) == 1)
+assert(example(1) == 2)
+assert(example(2) == 3)
+assert(try {
+  example(3)
+  false
+} catch {
+  case e: Exception => true
+})
