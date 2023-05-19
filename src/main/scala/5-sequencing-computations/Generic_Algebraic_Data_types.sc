@@ -16,7 +16,7 @@ sealed trait LinkedList[A] {
   final def apply(position: Int): A =
     this match {
       case End()                      => throw new Exception(s"No node at position: $position")
-      case LinkedListNode(data, next) => if (position == 0) data else next.apply(position - 1)
+      case LinkedListNode(data, next) => if (position == 0) data else next(position - 1)
     }
 
   def toString(linkedList: LinkedList[A]): String =
