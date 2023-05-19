@@ -13,10 +13,10 @@ final case class Failure[A](reason: String) extends Result[A]
 sealed trait LinkedList[A] {
 
   @tailrec
-  final def apply(position: Int): A =
+  final def apply(position: Int): Result[A] =
     this match {
-      case End()                      => throw new Exception(s"No node at position: $position")
-      case LinkedListNode(data, next) => if (position == 0) data else next(position - 1)
+      case End()                      => Failure("Index out of bounds")
+      case LinkedListNode(data, next) => if (position == 0) Success(data) else next.apply(position - 1)
     }
 
   def toString(linkedList: LinkedList[A]): String =
@@ -69,12 +69,18 @@ assert(!End().contains(0))
 // example.contains("not an Int")
 
 val example = LinkedListNode(1, LinkedListNode(2, LinkedListNode(3, End())))
-assert(example(0) == 1)
-assert(example(1) == 2)
-assert(example(2) == 3)
-assert(try {
-  example(3)
-  false
-} catch {
-  case e: Exception => true
-})
+//// Commenting out as we are now using Result type instead of throwing exception.
+//assert(example(0) == 1)
+//assert(example(1) == 2)
+//assert(example(2) == 3)
+//assert(try {
+//  example(3)
+//  false
+//} catch {
+//  case e: Exception => true
+//})
+
+assert(example(0) == Success(1))
+assert(example(1) == Success(2))
+assert(example(2) == Success(3))
+assert(example(3) == Failure("Index out of bounds"))
