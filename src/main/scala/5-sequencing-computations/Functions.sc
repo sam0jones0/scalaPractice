@@ -2,15 +2,16 @@ import scala.annotation.tailrec
 
 sealed trait IntList {
 
-  def fold(end: Int, f: (Int, Int) => Int): Int =
+  def fold[A](end: A, f: (Int, A) => A): A =
     this match {
       case End              => end
       case Pair(head, tail) => f(head, tail.fold(end, f))
     }
 
-  val sum     = () => this.fold(0, (x, y) => x + y)
-  val length  = () => this.fold(0, (_, y) => 1 + y)
-  val product = () => this.fold(1, (x, y) => x * y)
+  val sum     = () => this.fold[Int](0, (x, y: Int) => x + y)
+  val length  = () => this.fold(0, (_, y: Int) => 1 + y)
+  val product = () => this.fold(1, (x, y: Int) => x * y)
+  val double  = () => this.fold(End, (x, y) => Pair(x * 2, y))
 
   def toString: String
 
@@ -31,11 +32,11 @@ sealed trait IntList {
   //      case Pair(head, tail) => head * tail.product
   //    }
 
-  def double: IntList =
-    this match {
-      case End              => End
-      case Pair(head, tail) => Pair(head * 2, tail.double)
-    }
+  //  def double: IntList =
+  //    this match {
+  //      case End              => End
+  //      case Pair(head, tail) => Pair(head * 2, tail.double)
+  //    }
 
 }
 
@@ -52,3 +53,4 @@ val myList = Pair(1, Pair(2, Pair(3, End)))
 myList.sum()
 myList.length()
 myList.product()
+myList.double()
