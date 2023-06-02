@@ -1,5 +1,3 @@
-import scala.annotation.tailrec
-
 sealed trait IntList {
 
   def fold[A](end: A, f: (Int, A) => A): A =
