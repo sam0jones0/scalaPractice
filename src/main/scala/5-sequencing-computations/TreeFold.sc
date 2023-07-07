@@ -21,4 +21,4 @@ val strTree: BinaryTree[String] =
 
 intTree.fold[String]((x, y) => s"$x $y", _.toString)
 
-strTree.fold[String]((x, y) => s"$x $y", _.toString)
+strTree.fold[String]((x, y) => s"$x $y", str => str)
