@@ -7,6 +7,7 @@
 // - one function parameter for each case in A;
 // - each function takes as parameters the fields for its associated class;
 // - if A is recursive, any function parameters that refer to a recursive field take a
+
 //   parameter of type B.
 //
 // The right-hand side of pattern matching cases, or the polymorphic methods as
@@ -18,12 +19,12 @@ sealed trait LinkedList[A] {
       case End()            => end
       case Pair(head, tail) => pair(head, tail.fold(end, pair))
     }
-
-  val next = () =>
-    this match {
-      case End()         => End()
-      case Pair(_, tail) => tail
-    }
+//
+//  val next = () =>
+//    this match {
+//      case End()         => End()
+//      case Pair(_, tail) => tail
+//    }
 }
 
 final case class Pair[A](head: A, tail: LinkedList[A]) extends LinkedList[A]
@@ -31,5 +32,5 @@ final case class Pair[A](head: A, tail: LinkedList[A]) extends LinkedList[A]
 final case class End[A]() extends LinkedList[A]
 
 val myList = Pair(1, Pair(2, Pair(3, End())))
-
-myList.next()
+//
+//myList.next()
