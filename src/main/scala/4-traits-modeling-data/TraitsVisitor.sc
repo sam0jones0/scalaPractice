@@ -25,7 +25,7 @@ def missingCase(v: Visitor): Unit =
 
 def older(v1: Visitor, v2: Visitor): Boolean = v1.createdAt.before(v2.createdAt)
 
-val anonUser  = Anonymous("3-objects-and-classes")
+val anonUser  = Anonymous("essentialScala/src/main/scala/3-objects-and-classes")
 val knownUser = User("2", "test@example.com")
 
 older(anonUser, knownUser)
