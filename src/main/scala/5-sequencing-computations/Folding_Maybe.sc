@@ -1,5 +1,5 @@
 sealed trait Maybe[A] {
-  def fold[B](ifEmpty: B, f: (A => B)): B =
+  def fold[B](ifEmpty: B, f: A => B): B =
     this match {
       case Full(a) => f(a)
       case Empty() => ifEmpty
