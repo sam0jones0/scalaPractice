@@ -20,7 +20,7 @@ sealed trait IntList {
 
   @tailrec
   final def sumTail(total: Int = 0): Int = this match {
-    case End              => total
+    case End              ”=> total
     case Pair(head, tail) => tail.sumTail(total + head)
   }
 

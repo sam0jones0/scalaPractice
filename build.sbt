@@ -9,3 +9,4 @@ lazy val root = Project("scalaPractice", file("."))
     name := "scalaPractice",
     idePackagePrefix := Some("com.sam0jones0.scalaPractice")
   )
+  .settings(Dependencies.common)
