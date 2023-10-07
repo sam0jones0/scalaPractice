@@ -6,3 +6,5 @@
 /.idea/uiDesigner.xml
 /essentialScala/project/target/
 /essentialScala/target/
+/.idea/libraries/sbt__org_typelevel_cats_core_2_13_2_9_0_jar.xml
+/.idea/libraries/sbt__org_typelevel_cats_kernel_2_13_2_9_0_jar.xml
