@@ -10,3 +10,7 @@ sealed trait Sum[A, B] {
 final case class Left[A, B](value: A) extends Sum[A, B]
 
 final case class Right[A, B](value: B) extends Sum[A, B]
+
+val num: Left[String, Int] = Left("error")
+
+num.fold(println(_), n => println(s"num is ${n.toString}"))
