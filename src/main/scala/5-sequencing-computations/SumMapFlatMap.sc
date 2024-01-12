@@ -25,5 +25,5 @@ val num: Failure[String, Int]  = Failure("error")
 val num2: Success[String, Int] = Success(1)
 
 val mappin: Sum[String, Success[Nothing, Byte]] = num2.map(_.toLong).map(a => Success(a.toByte))
-
-val flatMappin: Sum[String, Byte] = num2.flatMap(a => Success(a.toLong)).flatMap(b => Success(b.toByte))
+val mappin2: Sum[String, Byte]                  = num2.map(_.toLong).map(a => a.toByte)
+val flatMappin: Sum[String, Byte]               = num2.flatMap(a => Success(a.toLong)).flatMap(b => Success(b.toByte))
