@@ -1,5 +1,5 @@
 ThisBuild / version := "0.1.0-SNAPSHOT"
-ThisBuild / scalaVersion := "2.13.8"
+ThisBuild / scalaVersion := "3.3.1"
 ThisBuild / semanticdbVersion := "4.4.33"
 ThisBuild / semanticdbEnabled := true
 ThisBuild / scalafixOnCompile := true
