@@ -27,3 +27,7 @@ val num2: Success[String, Int] = Success(1)
 val mappin: Sum[String, Success[Nothing, Byte]] = num2.map(_.toLong).map(a => Success(a.toByte))
 val mappin2: Sum[String, Byte]                  = num2.map(_.toLong).map(a => a.toByte)
 val flatMappin: Sum[String, Byte]               = num2.flatMap(a => Success(a.toLong)).flatMap(b => Success(b.toByte))
+
+trait Function1[-T, +O] {
+  def apply(a: Seq[T]): List[O]
+}
