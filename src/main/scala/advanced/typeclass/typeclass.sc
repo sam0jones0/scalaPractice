@@ -20,6 +20,18 @@ object JsonWriterInstances {
     override def write(value: String): Json = JsString(value)
   }
 
+  given doubleWriter: JsonWriter[Double] = new JsonWriter[Double] {
+    override def write(value: Double) = JsNumber(value)
+  }
+
+  given stringOrDoubleWriter: JsonWriter[String | Double] = new JsonWriter[String | Double] {
+    override def write(value: String | Double) =
+      value match {
+        case s: String => JsString(s)
+        case d: Double => JsNumber(d)
+      }
+  }
+
   given personWriter: JsonWriter[Person] = new JsonWriter[Person] {
     override def write(value: Person): Json = JsObject(
       Map("name" -> JsString(value.name), "email" -> JsString(value.email)))
@@ -30,12 +42,24 @@ object JsonWriterInstances {
       override def write(value: Seq[A]): Json = JsSeq(value.map(s => elemWriter.write(s)))
     }
 
+  given ObjectWriter[A](using elemWriter: JsonWriter[A]): JsonWriter[Map[String, A]] =
+    new JsonWriter[Map[String, A]] {
+      override def write(value: Map[String, A]) = JsObject {
+        Map.from {
+          value.map { (s, a) =>
+            (s, elemWriter.write(a))
+          }
+        }
+      }
+    }
+
 }
 
 // This is an interface
 object MyJson {
   def toJson[A](value: A)(implicit writer: JsonWriter[A]): Json =
     writer.write(value)
+  // So for any value A, if there is an implicit JsonWriter in scope, we can turn A to Json
 }
 
 object MyJsonSyntax {
@@ -64,3 +88,13 @@ Seq("hello").toJson
 MyJson.toJson("string")
 
 val samJson = MyJson.toJson(Person("sam", "sam@sam.com"))
+
+val samMapString: Map[String, String]         = Map.from(Seq("name" -> "sam", "age" -> "sam"))
+val samMapInt: Map[String, Double]            = Map.from(Seq("name" -> 1337d, "age" -> 34d))
+val samMapMixed: Map[String, String | Double] = Map.from(Seq("name" -> "sam", "age" -> 34d))
+
+val mapJsonString: Json = MyJson.toJson(samMapString)
+val mapJsonInt: Json    = MyJson.toJson(samMapInt)
+val mapJsonMixed: Json  = MyJson.toJson(samMapMixed)
+
+println(mapJsonMixed)
