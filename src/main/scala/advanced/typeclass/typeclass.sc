@@ -50,6 +50,11 @@ object JsonWriter {
       override def write(value: Seq[A]): Json = JsSeq(value.map(s => elemWriter.write(s)))
     }
 
+// Impossible. You _must_ implement a writer for your type
+//  given AnyWriter: JsonWriter[Any] = new JsonWriter[Any] {
+//    override def write(value: Any) = value.
+//  }
+
   given ObjectWriter[A](using elemWriter: JsonWriter[A]): JsonWriter[Map[String, A]] =
     new JsonWriter[Map[String, A]] {
       override def write(value: Map[String, A]) = JsObject {
