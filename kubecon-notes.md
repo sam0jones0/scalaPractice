@@ -194,4 +194,31 @@ Run collector in wasm... lets you run otel closer to the edge, i.e. desktop/mobi
 
 ## 12:00 Cloud Native Non-Functional Requirements
 
-- 
+- Emphasis on loose coupling for micrsoservices
+- So far talking about stuff we already do: observability, CI/CD, canary, rollbacks
+- Talking about DRY ......
+
+## 14:30 PDB
+
+- Only on eviction API, not delete api etc
+- PDB does protect when you update template
+- use priorityclass to evict lower priority pods when higher priority pod cannot be scheduled
+
+## 15:15 Schemea Inference and Automation (Otel Weaver)
+
+- They recommend a couple of related talks:
+    - Observability by Design
+    - Also A practical Blueprint for Evolving Observability Schemeas
+- What is observability by design?
+    - treat observability like an API
+    - Put signals in something like a schemea registry
+- OtelWeaver - https://github.com/open-telemetry/weaver / https://opentelemetry.io/blog/2025/otel-weaver/
+    - enforces policies via a registry e.g. backward compat
+    - Allows declarative metric writing, then generated dashboards/alerts/docs/instrumentation
+- They talk about metric name changes not being caught, dashboard breaks, alert breaks ...
+- Collected metrics are sent to weaver who validates against (or infers/creates for the first time) registry.yaml
+- Once registry.yaml is created "obervability by design starts"
+- So then "weaver live check" can do the validation against pre-existing registry.yaml
+- Can use registry.yaml to generate otel or prometheus client code
+- Open PR in prometheus to make it aware of versioned otel registry stuff
+
