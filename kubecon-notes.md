@@ -222,3 +222,75 @@ Run collector in wasm... lets you run otel closer to the edge, i.e. desktop/mobi
 - Can use registry.yaml to generate otel or prometheus client code
 - Open PR in prometheus to make it aware of versioned otel registry stuff
 
+## 16:15 Argo MCP / 10X Developer
+
+- Abstract ArgoCD API behind MCP server...
+- introduces argoproj-labs/mcp-for-argocd
+- Tools/resources/prompts
+    - They provide tools for every argoCD cli/api behaviour
+    - No resources are provided
+    - prompts are provided (reusable templates e.g. how to diagnose unhealthy app)
+- suggested use case: assisted troubleshooting
+    - to help with support bottleneck...
+    - "argo api is powerful"
+- **Use Argo MCP as a reverse proxy to query multiple ArgoCD instances**
+    - They mentioned using one argo-cd-mcp instance as a sort of reverse proxy to multiple ArgoCD instances. One entry
+      point to query the state of all your apps udner all your argo instances.
+- Something about agent skills(?)
+- QR code for stuff
+
+# Day 3
+
+## Keynotes
+
+- Saxo service blueprint to consolidate dev/stage/prod infra access PRs, e.g. kafka acls.
+- kagent and agentgateway from solo.io
+- agent benchmarking - https://aevals.ai/
+
+## 11:00 Generalising k8 controller sharding
+
+- kubernetes-controller-sharding repo allows k8 controllers to be horizontally scalable.
+
+## 11:45 Fluent Bit V5: Pushing the Limits of Observability at Scale
+
+bit of an advert...
+
+- fluentbit is a telemetry pipleine
+    - input: otel/prometheus/k8-events
+    - processorL LUA scripting, sampling
+    - routing: tag/match/regex
+    - outputs: splunk,otel prometheus,elastic
+- supports otel/prometheus schemea
+- Lets you run conditional logic to determine processing/routing decision
+- perf stated as faster than otel collector
+
+## 14:15 The Missing Half of Performance Profiling: Understanding Memory in Cloud Native Systems
+
+- Continuous profilers with object introspection current state of art on CPU profiling
+    - Is JFR a sampling profiler? (yes?)
+- Memory profiling:
+    - Allocation sampling - sample probability dictacted by size, i.e. sample 100% >512kb 12.55%>64kb
+        - detection heaby alloc
+        - e.g. go pprof
+    - In use profiling, paired often with allocation samplers: checks for dealloc,
+        - detects memory leaks
+    - Full heap capture: e.g. jvm heap dump
+    - **Object introspection**: newer: introspect object type to avoid heap alloc, i.e. keep container under static
+      size.
+        - e.g. Meta's OI
+        - Note on std:vector vs stdsmall_vector from Meta "folly?" project
+        - **How can we avoid heap allocs on JVM / Scala?**
+- pprof
+    - profiling dataformat in protobuf
+    - Examples of pprof tools
+        - Parca, sxrapes /pprof endpoints
+            - doesnt support jvm
+        - Pyroscope - https://pyroscope.io/
+            - supports Java
+            - push model
+        - Pixie
+            - doesnt support pprof yet
+    - https://github.com/grafana/JPProf
+        - can VisualVM, JProfiler, or Async-profiler export to pprof format?
+    - Careful of overhead
+- **I dont think we in PRS do any continuous profiling?**
