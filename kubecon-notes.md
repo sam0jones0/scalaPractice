@@ -356,4 +356,38 @@ bit of an advert...
 - Warm start: Create 1-many replicas of pod. Get pod in good state (refresh interval?) and rollout
 - pre-alpha
 - Alt work - https://gvisor.dev/docs/user_guide/checkpoint_restore/
-- 
+
+## The Accidental Platform Team: K8 Operators
+
+- The problem space: Cross-domain knowledge, complex cross-domain workflows. Manual processes and static config.
+    - Domain knowledge moved to operators
+- Shrink to MVP if pushback against over-automation
+- When you abstract away too much at once users of "the old way" may feel a loss of complexity/visibility as negative
+  signal
+
+## The Fourth Pillar Arrives: OpenTelemetry Profiles Alpha in Action
+
+- https://github.com/open-telemetry/opentelemetry-ebpf-profiler
+- Simplest profile typically collection of stack traces
+    - This leads to duplication, e.g. "main" in most if not all traces
+- Profiling addresses: Incidents (e.g. sudden CPU increase), costs, performance
+- **Otel profiling can link a profile with a trace, e.g. 50percilene latency vs 99percentile latency performace
+  comparison**
+- Mention of thread timelines and flamescope, which will be useable with the otel profiling format
+- [Now in Alpha](https://www.elastic.co/observability-labs/blog/otel-profiling-alpha)
+- New profile signal
+    - same resource and scope
+    - originated from pprof
+    - includes a ProfilesDictionary where strings/attributes are stored just once in K:V map
+    - Correlatable via "link" to traces, logs etc (spanId / traceId)
+- Recommended tool is OpenTelemtry eBPF Profiler (receiver)
+- You require one OTel Collector Daemonset per **node** not per pod.
+    - all the eBPF stuff runs in kernel
+    - You dont need to autoconfigure, it "just works"
+    - Custom stack unwindings for Java
+- Stated as having negligable overhead (~1% CPU)
+- Surfaces bottlenecks in entire syustem , not just code you own
+- Frictionless deployment, no need to restart pod etc
+- Run the reciever separate to other receieces as it has elevated privelges
+- Very cool showing profile comparing before after release, just side by side profile diff (of an LLM generated
+  bug/outage)
