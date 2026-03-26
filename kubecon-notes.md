@@ -325,3 +325,35 @@ bit of an advert...
 - Sounds like fuzzing but with state/time travel
 - they gave example of finding a very rare bug, as they could retrospectively see which state changes most increased the
   probability of a given bug appearing.
+
+# Day 4
+
+- Random note: Do we use docker with containerd under the hood or CRI-O ? CRI-O is supposed to be faster or something
+  idk
+
+## Kyverno
+
+- Runs in k8 as a "dynamic admissions controller"
+- "k8 native", i.e. just yaml managed as k8 resources
+- Policy as code, e.g. x k8 object (e.g. pod) must have y attr (e.g. label or version)
+
+## Ctrl-X + Ctrl-V Your Pods - WG Checkpoint Restore in K8
+
+- Historial ideas of usefulness for checkpoint/restore: OOM killer into OOM bumper, security kernel upgrades with
+  limited
+  fowntime, good for debuggers, profilers
+- Their goal is to enable k8-native support for checkpoint/restore
+- benefits:
+    - accelerating application startup
+    - fault tolerance: avoid recomputations, integrations with planned maintenance/spot instances.
+    - optimised resource util: load balancing, preemptions of low priority workloads,
+- There is a [kubelet-checkpoint-api](https://kubernetes.io/docs/reference/node/kubelet-checkpoint-api/), in beta as of
+  k8 v1.3
+- KEP-5823 https://github.com/kubernetes/enhancements/issues/5823
+- pod-snapshot-controller rst0git
+- user -> api -> controller -> kubelet
+    - create checkpoint -> get node -> create pod
+- Warm start: Create 1-many replicas of pod. Get pod in good state (refresh interval?) and rollout
+- pre-alpha
+- Alt work - https://gvisor.dev/docs/user_guide/checkpoint_restore/
+- 
