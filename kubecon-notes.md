@@ -294,3 +294,34 @@ bit of an advert...
         - can VisualVM, JProfiler, or Async-profiler export to pprof format?
     - Careful of overhead
 - **I dont think we in PRS do any continuous profiling?**
+
+## 15:00 Enterprise challenges with MCP Adoption
+
+- See photo for challenges
+- Anthropic wont define enterprise features in the spec, they prefer the community to figure it out as "extensions"
+- Local agent <--> local MCP communciates via stdio. Suggestion is to avoid this! MCP should be remote.
+- enterprise is steering away from API keys for remote MCP auth
+- Some people use MCP gateways, which control tracing, auth, authz, lifecycle, observability
+    - e.g. agentregistry and agentgateway ... donated to cncf?
+- MCP Auth default offering revolves more around OAuth (more user focused or for public SaaS MCP servers, rather than
+  enterprise needs)
+    - Doesnt provide per tool auth, just "front door" access
+    - See photo
+    - https://www.solo.io/blog/mcp-authorization-is-a-non-starter-for-enterprise
+
+## 16:45 Keeping the Cloud Afloat with Deterministic Simulation Testing
+
+- etcd MUST be reliable, its the source of truth for k8
+- antithesis is introduced as a testing tool...
+    - Lets you recreate states you have already seen during tests
+    - autonomous search
+        - showed example of enumerating mario paths
+        - splits timelines (i.e. timelines of system state change events, e.g. a clock advance event). i.e. branches
+            - it decides autonomously when to create a new branch, based on many things, e.g. novel state change,
+              something "new" happened
+        - You can use previous states as starting points
+    - determinism
+        - its a deterministic VM
+- Sounds like fuzzing but with state/time travel
+- they gave example of finding a very rare bug, as they could retrospectively see which state changes most increased the
+  probability of a given bug appearing.
